@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Jenna Jeon — UX & Visual Designer",
+  title: "Soyeong Jeon — UX & Visual Designer",
   description: "UX Designer & Visual Designer at Samsung Electronics",
 };
 

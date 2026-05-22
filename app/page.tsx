@@ -15,7 +15,7 @@ const EMAIL = "nattasoy@gmail.com"
 const CTA_LABEL = "Get in Touch"
 
 const SELF_INTRO =
-  "UX와 시각 디자인의 경계에서 사람 중심의 경험을 만듭니다. 삼성전자 UX팀에서 비주얼 인터랙션 디자이너로 일합니다."
+  "삼성전자 UX팀에서 비주얼 인터랙션 디자이너로 일하고 있습니다."
 
 const CURRENTLY_LABEL = "Currently at"
 const CURRENTLY_COMPANY = "Samsung Electronics, Seoul"
@@ -27,9 +27,19 @@ const CAREER_LIST = [
     company: "UX Team, Samsung Electronics",
   },
   {
-    period: "2020.06 — 2021.07",
+    period: "2021.03 — 2021.08",
+    role: "Design Assistant",
+    company: "toss (Viva Republica)",
+  },
+  {
+    period: "2020.06 — 2021.06",
     role: "Visual Designer",
-    company: "KDM+",
+    company: "Korea Design Membership Plus",
+  },
+  {
+    period: "2016.03 — 2020.02",
+    role: "Visual Communication Design, BFA",
+    company: "Hongik University",
   },
 ]
 
