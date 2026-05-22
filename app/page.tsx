@@ -14,9 +14,6 @@ const TAGLINE_LINE_2 = "& Visual Designer"
 const EMAIL = "nattasoy@gmail.com"
 const CTA_LABEL = "Get in Touch"
 
-const SELF_INTRO =
-  "삼성전자 UX팀에서 비주얼 인터랙션 디자이너로 일하고 있습니다."
-
 const CURRENTLY_LABEL = "Currently at"
 const CURRENTLY_COMPANY = "Samsung Electronics, Seoul"
 
@@ -25,7 +22,7 @@ const CAREER_LIST = [
     period: "2021.08 — Present",
     role: "Visual Interaction Designer",
     company: "UX Team, Samsung Electronics",
-    description: "One UI Watch SysUI 및 컴포넌트 디자인 시스템, 웨어러블 매니저 앱 비주얼 디자인 업무를 경험했고, 현재 One UI 선행 비주얼 디자인을 담당하고 있습니다.",
+    description: "MX사업부 UX팀 소속으로 One UI Watch SysUI 및 컴포넌트 디자인 시스템, 웨어러블 매니저 앱 비주얼 디자인 업무를 경험했고, 현재 One UI 선행 비주얼 디자인을 담당하고 있습니다.",
   },
   {
     period: "2021.03 — 2021.08",
@@ -48,7 +45,7 @@ const CAREER_LIST = [
 ]
 
 // 배경 / 텍스트 컬러 토큰
-const PAGE_BG = "bg-stone-50"
+const PAGE_BG = "bg-[#fef9f5]"
 const TEXT_PRIMARY = "text-zinc-900"
 const TEXT_MUTED = "text-zinc-500"
 const TEXT_GHOST = "text-zinc-300"
@@ -101,7 +98,7 @@ export default function Home() {
           className="-z-10 object-cover"
         />
         {/* 가독성 보강용 옅은 화이트 오버레이 */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-stone-50/40" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[#fef9f5]/40" />
 
         {/* 상단: 이메일 */}
         <BlurFade delay={0} direction="up" duration={0.5}>
@@ -118,7 +115,7 @@ export default function Home() {
           <GlowText
             as="h1"
             baseColor="#18181b"
-            className="font-display text-center text-[15vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[12vw] lg:text-[9rem]"
+            className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]"
           >
             {NAME}
           </GlowText>
@@ -137,7 +134,7 @@ export default function Home() {
           <GlowText
             as="h2"
             baseColor="#d4d4d8"
-            className="font-display text-center text-[10vw] font-black uppercase leading-[0.9] tracking-tight sm:text-[8vw] lg:text-[6.5rem]"
+            className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.9] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]"
           >
             {TAGLINE_LINE_1},
             <br />
@@ -149,7 +146,7 @@ export default function Home() {
         <BlurFade delay={0.46} direction="up" duration={0.5} className="mt-auto w-full pt-8 lg:pt-6">
           <div className="flex flex-col items-center">
             <a
-              href={`mailto:${EMAIL}`}
+              href="#contact"
               className="rounded-full bg-zinc-900 px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-stone-50 transition-all hover:scale-105 hover:shadow-[0_10px_28px_rgba(0,0,0,0.10)]"
             >
               {CTA_LABEL}
@@ -165,20 +162,13 @@ export default function Home() {
       >
         {/* 거대 ABOUT 타이틀 */}
         <BlurFade delay={0} direction="up" duration={0.6} inView inViewMargin="-80px">
-          <h2 className="font-display text-center text-[9vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[7vw] lg:text-[6rem]">
+          <h2 className="font-display text-center text-[7.2vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[5.6vw] lg:text-[4.8rem]">
             About
           </h2>
         </BlurFade>
 
-        {/* 자기소개 본문 */}
-        <BlurFade delay={0.12} direction="up" duration={0.6} inView inViewMargin="-80px" className="mt-12">
-          <p className="max-w-2xl text-center text-base leading-relaxed text-zinc-700 sm:text-lg">
-            {SELF_INTRO}
-          </p>
-        </BlurFade>
-
         {/* 경력 — Magic Card */}
-        <div className="mt-20 flex w-full max-w-2xl flex-col gap-4">
+        <div className="mt-16 flex w-full max-w-2xl flex-col gap-4">
           {CAREER_LIST.map((item, index) => (
             <BlurFade
               key={item.role}
@@ -191,9 +181,9 @@ export default function Home() {
               <div className="rounded-2xl">
                 <MagicCard
                   className="cursor-default px-7 py-6"
-                  gradientFrom="#93c5fd"
-                  gradientTo="#a78bfa"
-                  gradientColor="#ede9fe"
+                  gradientFrom="#fed7aa"
+                  gradientTo="#fde68a"
+                  gradientColor="#fff7ed"
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
@@ -227,7 +217,7 @@ export default function Home() {
       >
         {/* 거대 WORKS 타이틀 */}
         <BlurFade delay={0} direction="up" duration={0.6} inView inViewMargin="-80px">
-          <h2 className="font-display text-center text-[9vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[7vw] lg:text-[6rem]">
+          <h2 className="font-display text-center text-[7.2vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[5.6vw] lg:text-[4.8rem]">
             {WORKS_SECTION_TITLE}
           </h2>
         </BlurFade>
@@ -247,9 +237,9 @@ export default function Home() {
               <Link href={`/works/${work.slug}`} className="block h-full rounded-2xl">
                 <MagicCard
                   className="flex h-full cursor-pointer flex-col overflow-hidden p-0"
-                  gradientFrom="#93c5fd"
-                  gradientTo="#a78bfa"
-                  gradientColor="#ede9fe"
+                  gradientFrom="#fed7aa"
+                  gradientTo="#fde68a"
+                  gradientColor="#fff7ed"
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
@@ -285,7 +275,7 @@ export default function Home() {
       >
         {/* 섹션 타이틀 */}
         <BlurFade delay={0} direction="up" duration={0.6} inView inViewMargin="-80px">
-          <h2 className="font-display text-center text-[9vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[7vw] lg:text-[6rem]">
+          <h2 className="font-display text-center text-[7.2vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[5.6vw] lg:text-[4.8rem]">
             {CONTACT_SECTION_TITLE}
           </h2>
         </BlurFade>
@@ -300,9 +290,9 @@ export default function Home() {
         <BlurFade delay={0.2} direction="up" duration={0.6} inView inViewMargin="-60px" className="mt-16 w-full max-w-xl">
           <MagicCard
             className="cursor-default rounded-2xl p-8 sm:p-10"
-            gradientFrom="#93c5fd"
-            gradientTo="#a78bfa"
-            gradientColor="#ede9fe"
+            gradientFrom="#fed7aa"
+            gradientTo="#fde68a"
+            gradientColor="#fff7ed"
             gradientOpacity={0.6}
             gradientSize={220}
           >

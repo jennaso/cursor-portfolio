@@ -1,11 +1,11 @@
 "use client"
 
 import { useCallback, useRef } from "react"
-import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react"
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "motion/react"
 
 // ─── 글로우 튜닝 값 (여기서 수정하세요) ────────────────────────────────────────
-const GLOW_FROM = "#bfdbfe"    // 마우스 중심 색상 — blue-200 (더 연하게)
-const GLOW_TO = "#c4b5fd"      // 바깥쪽 색상 — violet-300 (더 연하게)
+const GLOW_FROM = "#fed7aa"    // 마우스 중심 색상 — orange-200
+const GLOW_TO = "#fde68a"      // 바깥쪽 색상 — amber-200
 const GLOW_SIZE = 220          // 그라디언트 반지름 (px)
 const SPRING_STIFFNESS = 300   // 따라오는 빠르기 (높을수록 빠름)
 const SPRING_DAMPING = 40      // 진동 감쇠 (높을수록 덜 튕김)
@@ -33,39 +33,64 @@ export function GlowText({ children, baseColor, className, as: Tag }: GlowTextPr
   // 마우스 중심에서 번지는 radial-gradient — 마지막 색이 baseColor라 자연스럽게 복귀
   const gradientImage = useMotionTemplate`radial-gradient(${GLOW_SIZE}px circle at ${springX}px ${springY}px, ${GLOW_FROM}, ${GLOW_TO} 35%, ${baseColor} 60%)`
 
+  // 호버 진입/이탈 애니메이션 (0 = 비활성, 1 = 활성)
+  const hoverProgress = useSpring(0, { stiffness: 200, damping: 28 })
+  const strokeColor = useTransform(
+    hoverProgress,
+    [0, 1],
+    ["rgba(254,215,170,0)", "rgba(254,215,170,0.65)"],
+  )
+
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLHeadingElement>) => {
       const rect = e.currentTarget.getBoundingClientRect()
       mouseX.set(e.clientX - rect.left)
       mouseY.set(e.clientY - rect.top)
+      hoverProgress.set(1)
     },
-    [mouseX, mouseY],
+    [mouseX, mouseY, hoverProgress],
   )
 
   const handleMouseLeave = useCallback(() => {
     mouseX.set(-GLOW_SIZE)
     mouseY.set(-GLOW_SIZE)
-  }, [mouseX, mouseY])
+    hoverProgress.set(0)
+  }, [mouseX, mouseY, hoverProgress])
 
   return (
     // h1/h2 태그는 시맨틱 유지 — 인터랙션만 여기서 감지
     <Tag ref={containerRef} className={className} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      {/*
-        motion.span (인라인 요소)에 background-clip: text 적용
-        — 인라인 요소에서만 background-clip: text 가 안정적으로 동작함
-      */}
-      <motion.span
-        style={{
-          backgroundImage: gradientImage,
-          WebkitBackgroundClip: "text",
-          backgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          color: "transparent",
-          display: "block",
-        }}
-      >
-        {children}
-      </motion.span>
+      <span style={{ position: "relative", display: "block" }}>
+        {/* 하단: stroke 전용 레이어 — fill이 투명하므로 letter 외곽 테두리만 노출됨 */}
+        <motion.span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "block",
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: strokeColor,
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {children}
+        </motion.span>
+
+        {/* 상단: 기존 그라디언트 fill — letter 내부를 덮어 stroke 안쪽을 가림 */}
+        <motion.span
+          style={{
+            backgroundImage: gradientImage,
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            color: "transparent",
+            display: "block",
+            position: "relative",
+          }}
+        >
+          {children}
+        </motion.span>
+      </span>
     </Tag>
   )
 }
