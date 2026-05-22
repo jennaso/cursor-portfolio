@@ -5,7 +5,7 @@ import Image from "next/image"
 import gsap from "gsap"
 
 // ─── 타입 ──────────────────────────────────────────────────────────────────
-type CardSlot = { rotation: number; label: string }
+type CardSlot = { rotation: number; label: string; imageSrc?: string }
 
 type Props = {
   slots: CardSlot[]
@@ -19,6 +19,9 @@ const HOVER_SCALE = 1.06       // 호버 시 크기 배율
 const FOLLOW_DURATION = 0.25   // 마우스 따라가는 속도 (초, 작을수록 빠름)
 const RETURN_DURATION = 0.8    // 손 떼고 원위치 돌아오는 시간 (초)
 const RETURN_EASE = "elastic.out(1, 0.35)"  // 탄성 느낌 (1=강도, 0.35=진동)
+
+// 아바타가 카드 위쪽으로 튀어나오는 비율 (예: 1.5 = 카드 높이보다 50% 더 높게)
+const AVATAR_OVERHANG = 1.5
 // ───────────────────────────────────────────────────────────────────────────
 
 export function CardRow({ slots, avatarSrc }: Props) {
@@ -81,7 +84,7 @@ export function CardRow({ slots, avatarSrc }: Props) {
     // perspective는 부모에 설정해야 여러 카드에 동시에 3D 공간이 적용됨
     <div
       aria-label="포트폴리오 카드 영역"
-      className="mt-6 flex items-center sm:mt-8 lg:mt-6"
+      className="mt-6 flex items-center overflow-visible sm:mt-8 lg:mt-6"
       style={{ perspective: "1000px" }}
     >
       {slots.map((slot, index) => {
@@ -97,17 +100,35 @@ export function CardRow({ slots, avatarSrc }: Props) {
               zIndex: isAvatar ? 10 : 5 - Math.abs(index - 2),
               willChange: "transform",
             }}
-            className="relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer overflow-hidden rounded-2xl bg-zinc-200 shadow-xl ring-1 ring-zinc-900/5 sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48"
+            // ⚠️ 이 부분은 로직 영역이므로 건드리지 마세요
+            // 아바타 카드는 배경·그림자 없이 투명, 일반 카드는 bg + overflow-hidden
+            className={`relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer rounded-2xl sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48 ${isAvatar ? "" : "overflow-hidden bg-zinc-200 shadow-xl ring-1 ring-zinc-900/5"}`}
           >
-            {isAvatar && (
+            {/* ⚠️ 이 부분은 로직 영역이므로 건드리지 마세요 */}
+            {isAvatar ? (
+              // 아바타: 카드보다 AVATAR_OVERHANG 배 높은 컨테이너를 하단에 고정
+              // → PNG 투명 배경 덕분에 캐릭터만 카드 위로 돌출되어 보임
+              <div
+                className="absolute inset-x-[-10%] bottom-[-5%]"
+                style={{ height: `${AVATAR_OVERHANG * 100}%` }}
+              >
+                <Image
+                  src={avatarSrc}
+                  alt="Jenna Jeon 아바타"
+                  fill
+                  sizes="(max-width: 640px) 30vw, (max-width: 1024px) 11rem, 14rem"
+                  className="object-contain object-bottom drop-shadow-2xl"
+                />
+              </div>
+            ) : slot.imageSrc ? (
               <Image
-                src={avatarSrc}
-                alt="Jenna Jeon 아바타"
+                src={slot.imageSrc}
+                alt={slot.label}
                 fill
                 sizes="(max-width: 640px) 22vw, (max-width: 1024px) 9rem, 12rem"
                 className="object-cover"
               />
-            )}
+            ) : null}
           </div>
         )
       })}
