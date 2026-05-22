@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { LightRays } from "@/components/ui/light-rays"
 import { CardRow } from "@/components/CardRow"
 import { CareerStack } from "@/components/CareerStack"
 import { BlurFade } from "@/components/ui/blur-fade"
@@ -7,6 +8,7 @@ import { MagicCard } from "@/components/ui/magic-card"
 import { ContactForm } from "@/components/ContactForm"
 import { GlowText } from "@/components/GlowText"
 import { LiveClock } from "@/components/LiveClock"
+import { Highlighter } from "@/components/ui/highlighter"
 import { WORKS_LIST } from "@/lib/works"
 
 // ─── 콘텐츠 상수 (시각적 값은 여기서 수정하세요) ──────────────────────────────
@@ -90,17 +92,15 @@ export default function Home() {
         id="hero"
         className="relative flex min-h-screen flex-col items-center overflow-x-hidden px-6 py-6 sm:px-10 sm:py-8 lg:h-screen lg:min-h-0 lg:py-10"
       >
-        {/* 배경 mesh 이미지 (텍스트 뒤에 배치) */}
-        <Image
-          src={`/hero-mesh-bg.png?v=${ASSET_VERSION}`}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10 object-cover"
+        {/* 배경: 연주황색 라이트 레이 */}
+        <LightRays
+          count={6}
+          color="rgba(255, 154, 53, 0.22)"
+          blur={48}
+          speed={18}
+          length="85vh"
+          className="-z-10"
         />
-        {/* 가독성 보강용 옅은 화이트 오버레이 */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[#fef9f5]/40" />
 
         {/* 상단: 위치 및 현재 시각 */}
         <BlurFade delay={0} direction="up" duration={0.5}>
@@ -113,14 +113,19 @@ export default function Home() {
         </BlurFade>
 
         {/* 이름 — 거대 타이포 */}
-        <BlurFade delay={0.1} direction="up" duration={0.6} className="mt-10 sm:mt-14 lg:mt-12">
-          <GlowText
-            as="h1"
-            baseColor="#18181b"
-            className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]"
+        <BlurFade delay={0.1} direction="up" duration={0.6} className="mt-6 sm:mt-14 lg:mt-12">
+          <Highlighter
+            action="underline"
+            color="#FF9A35"
+            strokeWidth={3}
+            animationDuration={600}
+            multiline
+            isView
           >
-            {NAME}
-          </GlowText>
+            <h1 className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]">
+              {NAME}
+            </h1>
+          </Highlighter>
         </BlurFade>
 
         {/* 5개 카드 — GSAP 호버 인터랙션은 CardRow(client) 컴포넌트에서 담당 */}
@@ -132,7 +137,7 @@ export default function Home() {
         </BlurFade>
 
         {/* 태그라인 — 거대 라이트 그레이 */}
-        <BlurFade delay={0.34} direction="up" duration={0.6} className="mt-6 sm:mt-8 lg:mt-6">
+        <BlurFade delay={0.34} direction="up" duration={0.6} className="mt-3 sm:mt-8 lg:mt-6">
           <GlowText
             as="h2"
             baseColor="#d4d4d8"
@@ -145,7 +150,7 @@ export default function Home() {
         </BlurFade>
 
         {/* 하단: CTA — mt-auto로 푸터를 섹션 하단에 고정 */}
-        <BlurFade delay={0.46} direction="up" duration={0.5} className="mt-auto w-full pt-8 lg:pt-6">
+        <BlurFade delay={0.46} direction="up" duration={0.5} className="mt-auto w-full pt-4 lg:pt-6">
           <div className="flex flex-col items-center">
             <a
               href="#contact"
