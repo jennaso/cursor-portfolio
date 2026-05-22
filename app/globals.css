@@ -8,7 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* Fustat: 영문 본문/UI, Pretendard Variable: 한국어 폴백 */
-  --font-sans: "Fustat", "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-sans: "Stack Sans Text", "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Consolas, "Courier New", monospace;
   --font-heading: "Stack Sans Text", "Fustat", system-ui, sans-serif;
   --font-display: "Stack Sans Headline", system-ui, sans-serif;

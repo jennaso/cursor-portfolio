@@ -18,9 +18,9 @@ export const WORKS_LIST: Work[] = [
   {
     slug: "work-01",
     title: "Space",
-    shortDescription: "폴더블 디바이스를 위한 가상의 멀티 OS 프레임워크",
+    shortDescription: "폴더블 디바이스를 위한 멀티 테마 프레임워크 컨셉",
     longDescription:
-      "스페이스는 폴더블 디바이스를 위한 가상의 멀티 OS 프레임워크 컨셉의 UI입니다. 업무, 휴식, 교류 등 다양한 일상에서 테마를 자유롭게 넘나들며 나만의 초개인화 공간을 느낄 수 있습니다.",
+      "스페이스는 폴더블 디바이스를 위한 멀티 테마 공간을 구성하는 UI 프레임워크 컨셉입니다. 업무, 휴식, 교류 등 다양한 일상에서 테마를 자유롭게 넘나들며 나만의 초개인화 공간을 느낄 수 있습니다.",
     thumbnail: "/works-01.png?v=5",
     links: [
       { label: "LinkedIn", href: "https://www.linkedin.com/" },
@@ -29,7 +29,7 @@ export const WORKS_LIST: Work[] = [
   {
     slug: "work-02",
     title: "Polytic",
-    shortDescription: "육면체 큐브가 쌓이며 기록되는 뉴스 아카이빙 서비스",
+    shortDescription: "큐브가 쌓이며 기록되는 뉴스 아카이빙 서비스 컨셉",
     longDescription:
       "폴리틱은 육면체 큐브 비주얼의 뉴스 아카이빙 서비스입니다. 유저가 뉴스를 읽은 흔적을 색상으로 기록하는 큐브와, 뉴스 선호타입 분류를 통해 유저의 읽기 습관을 시각적으로 보여줍니다. 이를 통해 더 현명한 방식으로 뉴스를 읽고 저장할 수 있도록 돕습니다.",
     thumbnail: "/works-02.png?v=5",

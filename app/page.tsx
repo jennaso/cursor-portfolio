@@ -1,10 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { CardRow } from "@/components/CardRow"
+import { CareerStack } from "@/components/CareerStack"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { MagicCard } from "@/components/ui/magic-card"
 import { ContactForm } from "@/components/ContactForm"
 import { GlowText } from "@/components/GlowText"
+import { LiveClock } from "@/components/LiveClock"
 import { WORKS_LIST } from "@/lib/works"
 
 // ─── 콘텐츠 상수 (시각적 값은 여기서 수정하세요) ──────────────────────────────
@@ -21,14 +23,14 @@ const CAREER_LIST = [
   {
     period: "2021.08 — Present",
     role: "Visual Interaction Designer",
-    company: "UX Team, Samsung Electronics",
+    company: "Samsung Electronics",
     description: "MX사업부 UX팀 소속으로 One UI Watch SysUI 및 컴포넌트 디자인 시스템, 웨어러블 매니저 앱 비주얼 디자인 업무를 경험했고, 현재 One UI 선행 비주얼 디자인을 담당하고 있습니다.",
   },
   {
     period: "2021.03 — 2021.08",
     role: "Design Assistant",
     company: "toss (Viva Republica)",
-    description: "플랫폼디자인 디자인 어시스턴트로 프레이머 기반의 디자인 시스템 및 Lottie 애니메이션 파일의 수정 개선 업무를 담당했습니다.",
+    description: "플랫폼디자인팀 디자인 어시스턴트로 프레이머 기반의 디자인 시스템 및 Lottie 애니메이션 파일의 수정 개선 업무를 담당했습니다.",
   },
   {
     period: "2020.06 — 2021.06",
@@ -76,7 +78,7 @@ const AVATAR_STYLES = [
 const WORKS_SECTION_TITLE = "Works"
 
 // Contact 섹션 타이틀 (폼 내부 텍스트는 components/ContactForm.tsx에서 수정하세요)
-const CONTACT_SECTION_TITLE = "함께 일하기"
+const CONTACT_SECTION_TITLE = "Contact"
 // ──────────────────────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -100,14 +102,14 @@ export default function Home() {
         {/* 가독성 보강용 옅은 화이트 오버레이 */}
         <div aria-hidden className="absolute inset-0 -z-10 bg-[#fef9f5]/40" />
 
-        {/* 상단: 이메일 */}
+        {/* 상단: 위치 및 현재 시각 */}
         <BlurFade delay={0} direction="up" duration={0.5}>
-          <a
-            href={`mailto:${EMAIL}`}
-            className={`${TEXT_MUTED} text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-zinc-900`}
-          >
-            {EMAIL}
-          </a>
+          <div className={`${TEXT_MUTED} flex flex-col items-center gap-0.5 text-[11px] uppercase tracking-[0.2em]`}>
+            <span>Based on Seoul, South Korea</span>
+            <span>
+              UTC +9, <LiveClock />
+            </span>
+          </div>
         </BlurFade>
 
         {/* 이름 — 거대 타이포 */}
@@ -155,59 +157,28 @@ export default function Home() {
         </BlurFade>
       </section>
 
-      {/* ════════════════════════ About ════════════════════════ */}
+      {/* ════════════════════════ Experience ════════════════════════ */}
       <section
-        id="about"
+        id="Experience"
         className="flex flex-col items-center px-6 py-32 sm:px-10 sm:py-40"
       >
-        {/* 거대 ABOUT 타이틀 */}
+        {/* 거대 experience 타이틀 */}
         <BlurFade delay={0} direction="up" duration={0.6} inView inViewMargin="-80px">
           <h2 className="font-display text-center text-[7.2vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[5.6vw] lg:text-[4.8rem]">
             About
           </h2>
         </BlurFade>
 
-        {/* 경력 — Magic Card */}
-        <div className="mt-16 flex w-full max-w-2xl flex-col gap-4">
-          {CAREER_LIST.map((item, index) => (
-            <BlurFade
-              key={item.role}
-              delay={0.24 + index * 0.1}
-              direction="up"
-              duration={0.6}
-              inView
-              inViewMargin="-60px"
-            >
-              <div className="rounded-2xl">
-                <MagicCard
-                  className="cursor-default px-7 py-6"
-                  gradientFrom="#FF9A35"
-                  gradientTo="#FFCB8E"
-                  gradientColor="#FFF3E8"
-                  gradientOpacity={0.6}
-                  gradientSize={180}
-                >
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-base font-semibold">{item.role}</p>
-                      <p className={`${TEXT_MUTED} mt-0.5 text-sm`}>
-                        {item.company}
-                      </p>
-                      {item.description && (
-                        <p className={`${TEXT_MUTED} mt-2 text-xs leading-relaxed`}>
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
-                    <span className={`${TEXT_MUTED} font-mono text-xs uppercase tracking-widest sm:shrink-0 sm:pl-6`}>
-                      {item.period}
-                    </span>
-                  </div>
-                </MagicCard>
-              </div>
-            </BlurFade>
-          ))}
-        </div>
+        {/* 경력 — 스택 카드 (클릭으로 펼침/접기) */}
+        <BlurFade delay={0.24} direction="up" duration={0.6} inView inViewMargin="-60px" className="mt-16 w-full flex justify-center">
+          <CareerStack
+            items={CAREER_LIST}
+            gradientFrom="#FF9A35"
+            gradientTo="#FFCB8E"
+            gradientColor="#FFF3E8"
+            textMuted={TEXT_MUTED}
+          />
+        </BlurFade>
       </section>
 
       {/* ════════════════════════ Works ════════════════════════ */}

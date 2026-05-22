@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Soyeong Jeon — UX & Visual Designer",
-  description: "UX Designer & Visual Designer at Samsung Electronics",
+  description: "Visual Interaction Designer at Samsung Electronics",
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&family=Stack+Sans+Headline:wght@200..700&family=Stack+Sans+Text:wght@200..700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&family=Stack+Sans+Text:wght@200..700&display=swap"
           rel="stylesheet"
         />
         {/* Pretendard Variable — 한국어 텍스트 폴백 (dynamic subset으로 성능 최적화) */}
