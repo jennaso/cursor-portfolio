@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useCallback } from "react"
+import { useRef, useEffect, useCallback, useState } from "react"
 import Image from "next/image"
 import gsap from "gsap"
 
@@ -9,7 +9,7 @@ type CardSlot = { rotation: number; label: string; imageSrc?: string }
 
 type Props = {
   slots: CardSlot[]
-  avatarSrc: string
+  avatarSrcs: string[]
 }
 
 // ─── 인터랙션 튜닝 값 (여기서 수정하세요) ──────────────────────────────────────
@@ -22,10 +22,15 @@ const RETURN_EASE = "elastic.out(1, 0.35)"  // 탄성 느낌 (1=강도, 0.35=진
 
 // 아바타가 카드 위쪽으로 튀어나오는 비율 (예: 1.5 = 카드 높이보다 50% 더 높게)
 const AVATAR_OVERHANG = 1.5
+const DEFAULT_AVATAR_INDEX = 3
 // ───────────────────────────────────────────────────────────────────────────
 
-export function CardRow({ slots, avatarSrc }: Props) {
+export function CardRow({ slots, avatarSrcs }: Props) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [currentAvatarIndex, setCurrentAvatarIndex] = useState(() =>
+    Math.min(DEFAULT_AVATAR_INDEX, Math.max(avatarSrcs.length - 1, 0)),
+  )
+  const currentAvatarSrc = avatarSrcs[currentAvatarIndex] ?? avatarSrcs[0] ?? ""
 
   // 마운트 시 GSAP가 각 카드의 초기 회전(fan 배치)을 소유하도록 설정
   useEffect(() => {
@@ -65,6 +70,26 @@ export function CardRow({ slots, avatarSrc }: Props) {
     [],
   )
 
+  const handleMouseEnter = useCallback(
+    (index: number) => {
+      const isAvatar = slots[index]?.label === "Avatar"
+      if (!isAvatar || avatarSrcs.length <= 1) return
+
+      setCurrentAvatarIndex((previousIndex) => {
+        const normalizedPreviousIndex =
+          previousIndex < avatarSrcs.length ? previousIndex : 0
+        let nextIndex = normalizedPreviousIndex
+
+        while (nextIndex === normalizedPreviousIndex) {
+          nextIndex = Math.floor(Math.random() * avatarSrcs.length)
+        }
+
+        return nextIndex
+      })
+    },
+    [avatarSrcs.length, slots],
+  )
+
   const handleMouseLeave = useCallback((index: number) => {
     const card = cardRefs.current[index]
     if (!card) return
@@ -94,6 +119,7 @@ export function CardRow({ slots, avatarSrc }: Props) {
             key={slot.label}
             ref={(el) => { cardRefs.current[index] = el }}
             aria-label={slot.label}
+            onMouseEnter={() => handleMouseEnter(index)}
             onMouseMove={(e) => handleMouseMove(e, index)}
             onMouseLeave={() => handleMouseLeave(index)}
             style={{
@@ -102,7 +128,7 @@ export function CardRow({ slots, avatarSrc }: Props) {
             }}
             // ⚠️ 이 부분은 로직 영역이므로 건드리지 마세요
             // 아바타 카드는 배경·그림자 없이 투명, 일반 카드는 bg + overflow-hidden
-            className={`relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer rounded-2xl sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48 ${isAvatar ? "" : "overflow-hidden bg-zinc-200 shadow-xl ring-1 ring-zinc-900/5"}`}
+            className={`relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer rounded-2xl sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48 ${isAvatar ? "" : "overflow-hidden bg-zinc-200 shadow-[0_10px_28px_rgba(0,0,0,0.10)] ring-1 ring-zinc-900/5"}`}
           >
             {/* ⚠️ 이 부분은 로직 영역이므로 건드리지 마세요 */}
             {isAvatar ? (
@@ -113,7 +139,7 @@ export function CardRow({ slots, avatarSrc }: Props) {
                 style={{ height: `${AVATAR_OVERHANG * 100}%` }}
               >
                 <Image
-                  src={avatarSrc}
+                  src={currentAvatarSrc}
                   alt="Jenna Jeon 아바타"
                   fill
                   sizes="(max-width: 640px) 30vw, (max-width: 1024px) 11rem, 14rem"

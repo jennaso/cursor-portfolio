@@ -25,21 +25,25 @@ const CAREER_LIST = [
     period: "2021.08 — Present",
     role: "Visual Interaction Designer",
     company: "UX Team, Samsung Electronics",
+    description: "One UI Watch SysUI 및 컴포넌트 디자인 시스템, 웨어러블 매니저 앱 비주얼 디자인 업무를 경험했고, 현재 One UI 선행 비주얼 디자인을 담당하고 있습니다.",
   },
   {
     period: "2021.03 — 2021.08",
     role: "Design Assistant",
     company: "toss (Viva Republica)",
+    description: "플랫폼디자인 디자인 어시스턴트로 프레이머 기반의 디자인 시스템 및 Lottie 애니메이션 파일의 수정 개선 업무를 담당했습니다.",
   },
   {
     period: "2020.06 — 2021.06",
     role: "Visual Designer",
     company: "Korea Design Membership Plus",
+    description: "한국디자인진흥원 지원사업인 KDM+ 1기 장학생으로 LG전자 UX연구소, BMW Designworks 산학 프로젝트를 진행했습니다.",
   },
   {
     period: "2016.03 — 2020.02",
     role: "Visual Communication Design, BFA",
     company: "Hongik University",
+    description: "홍익대학교 디자인학부 시각디자인 전공",
   },
 ]
 
@@ -60,15 +64,22 @@ const CARD_SLOTS = [
   { rotation: 10,  label: "Card 4", imageSrc: WORKS_LIST[3].thumbnail },
 ]
 
+// 이미지 캐시버스터: 이미지를 새로 생성할 때마다 값을 올려서 브라우저 캐시 무효화
+const ASSET_VERSION = "5"
+
+const AVATAR_STYLES = [
+  `/avatar-pixel.png?v=${ASSET_VERSION}`,
+  `/avatar-lego.png?v=${ASSET_VERSION}`,
+  `/avatar-doodle.png?v=${ASSET_VERSION}`,
+  `/avatar 1.png?v=${ASSET_VERSION}`,
+  `/avatar-realistic.png?v=${ASSET_VERSION}`,
+]
+
 // Works 섹션 타이틀
 const WORKS_SECTION_TITLE = "Works"
 
 // Contact 섹션 타이틀 (폼 내부 텍스트는 components/ContactForm.tsx에서 수정하세요)
 const CONTACT_SECTION_TITLE = "함께 일하기"
-const CONTACT_SUBTITLE = "편하게 연락주세요."
-
-// 이미지 캐시버스터: 이미지를 새로 생성할 때마다 값을 올려서 브라우저 캐시 무효화
-const ASSET_VERSION = "4"
 // ──────────────────────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -117,7 +128,7 @@ export default function Home() {
         <BlurFade delay={0.22} direction="up" duration={0.6} className="flex w-full justify-center overflow-visible">
           <CardRow
             slots={CARD_SLOTS}
-            avatarSrc={`/avatar 1.png?v=${ASSET_VERSION}`}
+            avatarSrcs={AVATAR_STYLES}
           />
         </BlurFade>
 
@@ -134,24 +145,15 @@ export default function Home() {
           </GlowText>
         </BlurFade>
 
-        {/* 하단: CTA + 현재 소속 — mt-auto로 푸터를 섹션 하단에 고정 */}
+        {/* 하단: CTA — mt-auto로 푸터를 섹션 하단에 고정 */}
         <BlurFade delay={0.46} direction="up" duration={0.5} className="mt-auto w-full pt-8 lg:pt-6">
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center">
             <a
               href={`mailto:${EMAIL}`}
-              className="rounded-full bg-zinc-900 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-stone-50 transition-colors hover:bg-zinc-700"
+              className="rounded-full bg-zinc-900 px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-stone-50 transition-all hover:scale-105 hover:shadow-[0_10px_28px_rgba(0,0,0,0.10)]"
             >
               {CTA_LABEL}
             </a>
-
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em]">
-                {CURRENTLY_LABEL}
-              </span>
-              <span className={`${TEXT_MUTED} text-[11px] uppercase tracking-[0.2em]`}>
-                {CURRENTLY_COMPANY}
-              </span>
-            </div>
           </div>
         </BlurFade>
       </section>
@@ -195,14 +197,19 @@ export default function Home() {
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                       <p className="text-base font-semibold">{item.role}</p>
                       <p className={`${TEXT_MUTED} mt-0.5 text-sm`}>
                         {item.company}
                       </p>
+                      {item.description && (
+                        <p className={`${TEXT_MUTED} mt-2 text-xs leading-relaxed`}>
+                          {item.description}
+                        </p>
+                      )}
                     </div>
-                    <span className={`${TEXT_MUTED} font-mono text-xs uppercase tracking-widest`}>
+                    <span className={`${TEXT_MUTED} font-mono text-xs uppercase tracking-widest sm:shrink-0 sm:pl-6`}>
                       {item.period}
                     </span>
                   </div>
@@ -286,14 +293,13 @@ export default function Home() {
         {/* 안내 문구 */}
         <BlurFade delay={0.1} direction="up" duration={0.6} inView inViewMargin="-80px" className="mt-5">
           <p className={`${TEXT_MUTED} text-center text-sm uppercase tracking-[0.2em]`}>
-            {CONTACT_SUBTITLE}
           </p>
         </BlurFade>
 
         {/* 폼 */}
         <BlurFade delay={0.2} direction="up" duration={0.6} inView inViewMargin="-60px" className="mt-16 w-full max-w-xl">
           <MagicCard
-            className="cursor-default p-8 sm:p-10"
+            className="cursor-default rounded-2xl p-8 sm:p-10"
             gradientFrom="#93c5fd"
             gradientTo="#a78bfa"
             gradientColor="#ede9fe"
