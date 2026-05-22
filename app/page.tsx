@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { CardRow } from "@/components/CardRow"
+import { CardRowClient as CardRow } from "@/components/CardRowClient"
 import { CareerStack } from "@/components/CareerStack"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { MagicCard } from "@/components/ui/magic-card"
