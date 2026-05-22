@@ -1,6 +1,5 @@
 import Image from "next/image"
 import Link from "next/link"
-import { LightRays } from "@/components/ui/light-rays"
 import { CardRow } from "@/components/CardRow"
 import { CareerStack } from "@/components/CareerStack"
 import { BlurFade } from "@/components/ui/blur-fade"
@@ -8,7 +7,6 @@ import { MagicCard } from "@/components/ui/magic-card"
 import { ContactForm } from "@/components/ContactForm"
 import { GlowText } from "@/components/GlowText"
 import { LiveClock } from "@/components/LiveClock"
-import { Highlighter } from "@/components/ui/highlighter"
 import { WORKS_LIST } from "@/lib/works"
 
 // ─── 콘텐츠 상수 (시각적 값은 여기서 수정하세요) ──────────────────────────────
@@ -48,11 +46,11 @@ const CAREER_LIST = [
   },
 ]
 
-// 배경 / 텍스트 컬러 토큰
-const PAGE_BG = "bg-[#fef9f5]"
-const TEXT_PRIMARY = "text-zinc-900"
-const TEXT_MUTED = "text-zinc-500"
-const TEXT_GHOST = "text-zinc-300"
+// 배경 / 텍스트 컬러 토큰 (테마 자동 대응)
+const PAGE_BG = "bg-page-background"
+const TEXT_PRIMARY = "text-foreground"
+const TEXT_MUTED = "text-muted-foreground"
+const TEXT_GHOST = "text-ghost-foreground"
 
 // 카드 플레이스홀더: 5개 슬롯 (가운데는 아바타 자리)
 // rotation 단위: deg / index 0~4 (좌→우)
@@ -92,16 +90,6 @@ export default function Home() {
         id="hero"
         className="relative flex min-h-screen flex-col items-center overflow-x-hidden px-6 py-6 sm:px-10 sm:py-8 lg:h-screen lg:min-h-0 lg:py-10"
       >
-        {/* 배경: 연주황색 라이트 레이 */}
-        <LightRays
-          count={6}
-          color="rgba(255, 154, 53, 0.22)"
-          blur={48}
-          speed={18}
-          length="85vh"
-          className="-z-10"
-        />
-
         {/* 상단: 위치 및 현재 시각 */}
         <BlurFade delay={0} direction="up" duration={0.5}>
           <div className={`${TEXT_MUTED} flex flex-col items-center gap-0.5 text-[11px] uppercase tracking-[0.2em]`}>
@@ -114,18 +102,9 @@ export default function Home() {
 
         {/* 이름 — 거대 타이포 */}
         <BlurFade delay={0.1} direction="up" duration={0.6} className="mt-6 sm:mt-14 lg:mt-12">
-          <Highlighter
-            action="underline"
-            color="#FF9A35"
-            strokeWidth={3}
-            animationDuration={600}
-            multiline
-            isView
-          >
-            <h1 className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]">
-              {NAME}
-            </h1>
-          </Highlighter>
+          <h1 className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]">
+            {NAME}
+          </h1>
         </BlurFade>
 
         {/* 5개 카드 — GSAP 호버 인터랙션은 CardRow(client) 컴포넌트에서 담당 */}
@@ -140,7 +119,7 @@ export default function Home() {
         <BlurFade delay={0.34} direction="up" duration={0.6} className="mt-3 sm:mt-8 lg:mt-6">
           <GlowText
             as="h2"
-            baseColor="#d4d4d8"
+            baseColor="var(--ghost-foreground)"
             className="font-display text-center text-[8.4vw] font-black uppercase leading-[0.9] tracking-tight sm:text-[6.72vw] lg:text-[5.04rem]"
           >
             {TAGLINE_LINE_1},
@@ -154,7 +133,7 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <a
               href="#contact"
-              className="rounded-full bg-zinc-900 px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-stone-50 transition-all hover:scale-105 hover:shadow-[0_10px_28px_rgba(0,0,0,0.10)]"
+              className="rounded-full bg-foreground px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-page-background transition-all hover:scale-105 hover:shadow-[0_10px_28px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_10px_28px_rgba(0,0,0,0.45)]"
             >
               {CTA_LABEL}
             </a>
@@ -180,7 +159,7 @@ export default function Home() {
             items={CAREER_LIST}
             gradientFrom="#FF9A35"
             gradientTo="#FFCB8E"
-            gradientColor="#FFF3E8"
+            gradientColor="var(--brand-wash)"
             textMuted={TEXT_MUTED}
           />
         </BlurFade>
@@ -215,12 +194,12 @@ export default function Home() {
                   className="flex h-full cursor-pointer flex-col overflow-hidden p-0"
                   gradientFrom="#FF9A35"
                   gradientTo="#FFCB8E"
-                  gradientColor="#FFF3E8"
+                  gradientColor="var(--brand-wash)"
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
                   {/* 썸네일 이미지 영역 */}
-                  <div className="w-full overflow-hidden bg-zinc-100">
+                  <div className="w-full overflow-hidden bg-muted">
                     <Image
                       src={work.thumbnail}
                       alt={work.title}
@@ -268,7 +247,7 @@ export default function Home() {
             className="cursor-default rounded-2xl p-8 sm:p-10"
             gradientFrom="#FF9A35"
             gradientTo="#FFCB8E"
-            gradientColor="#FFF3E8"
+            gradientColor="var(--brand-wash)"
             gradientOpacity={0.6}
             gradientSize={220}
           >

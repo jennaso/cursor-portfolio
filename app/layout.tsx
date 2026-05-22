@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggleFab } from "@/components/ThemeToggleFab";
 
 export const metadata: Metadata = {
   title: "Soyeong Jeon — UX & Visual Designer",
@@ -12,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <head>
         {/* Fustat (본문/UI 영문) + Stack Sans Headline (디스플레이) + Stack Sans Text */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +31,18 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          storageKey="theme"
+          disableTransitionOnChange
+        >
+          {children}
+          <ThemeToggleFab />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

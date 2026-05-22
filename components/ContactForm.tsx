@@ -16,7 +16,7 @@ const MSG_ERROR = "전송에 실패했어요. 잠시 후 다시 시도해주세�
 // ───────────────────────────────────────────────────────────────────────────────
 
 const INPUT_CLASS =
-  "rounded-2xl border border-zinc-200 bg-stone-50/80 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-300 outline-none transition-colors focus:border-zinc-400 focus:bg-white"
+  "rounded-2xl border border-border bg-card-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-ghost-foreground outline-none transition-colors focus:border-foreground/40 focus:bg-card-surface"
 
 type Status = "idle" | "loading" | "success" | "error"
 
@@ -60,7 +60,7 @@ export function ContactForm() {
       <div className="flex flex-col gap-1.5">
         <label
           htmlFor="contact-name"
-          className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500"
+          className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground"
         >
           {FIELD_NAME_LABEL}
         </label>
@@ -78,7 +78,7 @@ export function ContactForm() {
       <div className="flex flex-col gap-1.5">
         <label
           htmlFor="contact-email"
-          className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500"
+          className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground"
         >
           {FIELD_EMAIL_LABEL}
         </label>
@@ -96,7 +96,7 @@ export function ContactForm() {
       <div className="flex flex-col gap-1.5">
         <label
           htmlFor="contact-message"
-          className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500"
+          className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground"
         >
           {FIELD_MESSAGE_LABEL}
         </label>
@@ -115,16 +115,16 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="rounded-full bg-zinc-900 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-stone-50 transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-full bg-foreground px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-page-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {status === "loading" ? SUBMIT_LOADING_LABEL : SUBMIT_LABEL}
         </button>
 
         {status === "success" && (
-          <p className="text-[12px] tracking-wide text-zinc-500">{MSG_SUCCESS}</p>
+          <p className="text-[12px] tracking-wide text-muted-foreground">{MSG_SUCCESS}</p>
         )}
         {status === "error" && (
-          <p className="text-[12px] tracking-wide text-red-400">{MSG_ERROR}</p>
+          <p className="text-[12px] tracking-wide text-destructive">{MSG_ERROR}</p>
         )}
       </div>
     </form>

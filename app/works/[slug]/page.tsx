@@ -5,9 +5,9 @@ import { BlurFade } from "@/components/ui/blur-fade"
 import { WORKS_LIST } from "@/lib/works"
 
 // ─── 시각적 값 (여기서 수정하세요) ─────────────────────────────────────────────
-const PAGE_BG = "bg-stone-50"
-const TEXT_PRIMARY = "text-zinc-900"
-const TEXT_MUTED = "text-zinc-500"
+const PAGE_BG = "bg-page-background"
+const TEXT_PRIMARY = "text-foreground"
+const TEXT_MUTED = "text-muted-foreground"
 const BACK_LABEL = "← 모든 작업물 보기"
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -36,7 +36,7 @@ export default async function WorkDetailPage({
         <BlurFade delay={0} direction="up" duration={0.5}>
           <Link
             href="/#works"
-            className={`${TEXT_MUTED} inline-flex items-center text-[11px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-zinc-900`}
+            className={`${TEXT_MUTED} inline-flex items-center text-[11px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-foreground`}
           >
             {BACK_LABEL}
           </Link>
@@ -51,7 +51,7 @@ export default async function WorkDetailPage({
 
         {/* 썸네일 이미지 */}
         <BlurFade delay={0.2} direction="up" duration={0.6} className="mt-10">
-          <div className="w-full overflow-hidden rounded-2xl bg-zinc-100">
+          <div className="w-full overflow-hidden rounded-2xl bg-muted">
             <Image
               src={work.thumbnail}
               alt={work.title}
@@ -66,7 +66,7 @@ export default async function WorkDetailPage({
 
         {/* 긴 설명 */}
         <BlurFade delay={0.3} direction="up" duration={0.6} className="mt-10">
-          <p className="text-base leading-relaxed text-zinc-700 sm:text-lg">
+          <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
             {work.longDescription}
           </p>
         </BlurFade>
@@ -81,7 +81,7 @@ export default async function WorkDetailPage({
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full bg-zinc-900 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-stone-50 transition-colors hover:bg-zinc-700"
+                  className="rounded-full bg-foreground px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-page-background transition-colors hover:opacity-80"
                 >
                   {link.label} ↗
                 </a>

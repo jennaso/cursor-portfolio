@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useCallback, useState } from "react"
+import { useRef, useEffect, useCallback, useState, useSyncExternalStore } from "react"
 import Image from "next/image"
 import gsap from "gsap"
 
@@ -35,6 +35,18 @@ const MOBILE_TILT_X_VW = 8
 const MOBILE_ROTATION_MULTIPLIER = 2.2
 // ───────────────────────────────────────────────────────────────────────────
 
+// useSyncExternalStore로 미디어 쿼리를 SSR-safe하게 구독
+// (useState/useEffect는 hydration 직후 짧게 데스크탑 fan을 보였다 사라지는 깜빡임 발생)
+const MOBILE_MEDIA_QUERY = "(max-width: 639px)"
+const subscribeMediaQuery = (callback: () => void) => {
+  const mq = window.matchMedia(MOBILE_MEDIA_QUERY)
+  mq.addEventListener("change", callback)
+  return () => mq.removeEventListener("change", callback)
+}
+const getMediaQueryClientSnapshot = () =>
+  window.matchMedia(MOBILE_MEDIA_QUERY).matches
+const getMediaQueryServerSnapshot = () => false
+
 export function CardRow({ slots, avatarSrcs }: Props) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const [currentAvatarIndex, setCurrentAvatarIndex] = useState(() =>
@@ -42,16 +54,12 @@ export function CardRow({ slots, avatarSrcs }: Props) {
   )
   const currentAvatarSrc = avatarSrcs[currentAvatarIndex] ?? avatarSrcs[0] ?? ""
 
-  // ─── 모바일 감지 (< 640px) ─────────────────────────────────────────────
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)")
-    setIsMobile(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
+  // ─── 모바일 감지 (< 640px) — SSR-safe ──────────────────────────────────
+  const isMobile = useSyncExternalStore(
+    subscribeMediaQuery,
+    getMediaQueryClientSnapshot,
+    getMediaQueryServerSnapshot,
+  )
 
   // 마운트 시 GSAP가 각 카드의 초기 회전(fan 배치)을 소유하도록 설정
   // 모바일에서는 CSS/inline style로 처리하므로 skip
@@ -94,6 +102,10 @@ export function CardRow({ slots, avatarSrcs }: Props) {
 
   const handleMouseEnter = useCallback(
     (index: number) => {
+      // 인터랙션 시작 시점에만 GPU 레이어 힌트 부여
+      const card = cardRefs.current[index]
+      if (card) card.style.willChange = "transform"
+
       const isAvatar = slots[index]?.label === "Avatar"
       if (!isAvatar || avatarSrcs.length <= 1) return
 
@@ -124,6 +136,10 @@ export function CardRow({ slots, avatarSrcs }: Props) {
       duration: RETURN_DURATION,
       ease: RETURN_EASE,
       overwrite: "auto",
+      onComplete: () => {
+        // 애니메이션 종료 후 GPU 레이어 해제
+        card.style.willChange = "auto"
+      },
     })
   }, [])
 
@@ -148,6 +164,7 @@ export function CardRow({ slots, avatarSrcs }: Props) {
 
       const card = innerCardRefs.current[index]
       if (!card) return
+      card.style.willChange = "transform"
       gsap.to(card, {
         scale: HOVER_SCALE,
         y: LIFT_Y,
@@ -168,6 +185,9 @@ export function CardRow({ slots, avatarSrcs }: Props) {
       duration: RETURN_DURATION,
       ease: RETURN_EASE,
       overwrite: "auto",
+      onComplete: () => {
+        card.style.willChange = "auto"
+      },
     })
   }, [])
 
@@ -206,11 +226,10 @@ export function CardRow({ slots, avatarSrcs }: Props) {
                 ref={(el) => { innerCardRefs.current[index] = el }}
                 onTouchStart={() => handleTouchStart(index)}
                 onTouchEnd={() => handleTouchEnd(index)}
-                style={{ willChange: "transform" }}
                 className={`relative aspect-[3/4] w-full cursor-pointer rounded-2xl ${
                   isAvatar
                     ? "overflow-visible"
-                    : "overflow-hidden bg-zinc-200 shadow-[0_10px_28px_rgba(0,0,0,0.10)] ring-1 ring-zinc-900/5"
+                    : "overflow-hidden bg-muted shadow-[0_10px_28px_rgba(0,0,0,0.10)] ring-1 ring-foreground/10 dark:shadow-[0_10px_28px_rgba(0,0,0,0.45)] dark:ring-brand-orange/50"
                 }`}
               >
                 {isAvatar ? (
@@ -262,9 +281,8 @@ export function CardRow({ slots, avatarSrcs }: Props) {
             onMouseLeave={() => handleMouseLeave(index)}
             style={{
               zIndex: isAvatar ? 10 : 5 - Math.abs(index - 2),
-              willChange: "transform",
             }}
-            className={`relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer rounded-2xl sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48 ${isAvatar ? "" : "overflow-hidden bg-zinc-200 shadow-[0_10px_28px_rgba(0,0,0,0.10)] ring-1 ring-zinc-900/5"}`}
+            className={`relative -mx-2 aspect-[3/4] w-[22vw] max-w-[13rem] cursor-pointer rounded-2xl sm:-mx-3 sm:w-36 lg:-mx-4 lg:w-48 ${isAvatar ? "" : "overflow-hidden bg-muted shadow-[0_10px_28px_rgba(0,0,0,0.10)] ring-1 ring-foreground/10 dark:shadow-[0_10px_28px_rgba(0,0,0,0.45)] dark:ring-brand-orange/50"}`}
           >
             {isAvatar ? (
               <div
