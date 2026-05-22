@@ -4,8 +4,8 @@ import { useCallback, useRef } from "react"
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "motion/react"
 
 // ─── 글로우 튜닝 값 (여기서 수정하세요) ────────────────────────────────────────
-const GLOW_FROM = "#fed7aa"    // 마우스 중심 색상 — orange-200
-const GLOW_TO = "#fde68a"      // 바깥쪽 색상 — amber-200
+const GLOW_FROM = "#FF9A35"    // 마우스 중심 색상 — vivid orange
+const GLOW_TO = "#FFCB8E"      // 바깥쪽 색상 — light peach orange
 const GLOW_SIZE = 220          // 그라디언트 반지름 (px)
 const SPRING_STIFFNESS = 300   // 따라오는 빠르기 (높을수록 빠름)
 const SPRING_DAMPING = 40      // 진동 감쇠 (높을수록 덜 튕김)
@@ -38,7 +38,7 @@ export function GlowText({ children, baseColor, className, as: Tag }: GlowTextPr
   const strokeColor = useTransform(
     hoverProgress,
     [0, 1],
-    ["rgba(254,215,170,0)", "rgba(254,215,170,0.65)"],
+    ["rgba(255,154,53,0)", "rgba(255,154,53,0.55)"],
   )
 
   const handleMouseMove = useCallback(

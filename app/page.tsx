@@ -181,9 +181,9 @@ export default function Home() {
               <div className="rounded-2xl">
                 <MagicCard
                   className="cursor-default px-7 py-6"
-                  gradientFrom="#fed7aa"
-                  gradientTo="#fde68a"
-                  gradientColor="#fff7ed"
+                  gradientFrom="#FF9A35"
+                  gradientTo="#FFCB8E"
+                  gradientColor="#FFF3E8"
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
@@ -237,9 +237,9 @@ export default function Home() {
               <Link href={`/works/${work.slug}`} className="block h-full rounded-2xl">
                 <MagicCard
                   className="flex h-full cursor-pointer flex-col overflow-hidden p-0"
-                  gradientFrom="#fed7aa"
-                  gradientTo="#fde68a"
-                  gradientColor="#fff7ed"
+                  gradientFrom="#FF9A35"
+                  gradientTo="#FFCB8E"
+                  gradientColor="#FFF3E8"
                   gradientOpacity={0.6}
                   gradientSize={180}
                 >
@@ -290,9 +290,9 @@ export default function Home() {
         <BlurFade delay={0.2} direction="up" duration={0.6} inView inViewMargin="-60px" className="mt-16 w-full max-w-xl">
           <MagicCard
             className="cursor-default rounded-2xl p-8 sm:p-10"
-            gradientFrom="#fed7aa"
-            gradientTo="#fde68a"
-            gradientColor="#fff7ed"
+            gradientFrom="#FF9A35"
+            gradientTo="#FFCB8E"
+            gradientColor="#FFF3E8"
             gradientOpacity={0.6}
             gradientSize={220}
           >
